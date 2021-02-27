@@ -1,6 +1,8 @@
 # pestmapv2
 
-A new Flutter project.
+User can take a photo, the intergrated AI model will recoganize the object in the image. This APP will save the data of the pest in the imgae to cloud, and then display the data on map. Users can find the place of the pest on the map, and the heat map will show the severity of the pest.
+
+This app is a flutter APP which can run both on Android and IOS.
 
 ## Getting Started
 
