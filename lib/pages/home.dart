@@ -14,8 +14,6 @@ class MyCamera extends StatefulWidget {
 }
 
 class _MyCameraState extends State<MyCamera> {
-  List _recognitions;
-
   @override
   void initState() {
     super.initState();
@@ -28,6 +26,7 @@ class _MyCameraState extends State<MyCamera> {
       String res;
       res = await Tflite.loadModel(
         model: 'assets/tflite/model_unquant.tflite',
+        labels: 'assets/tflite/labels.txt',
       );
       print(res);
     } on PlatformException {
@@ -36,8 +35,11 @@ class _MyCameraState extends State<MyCamera> {
   }
 
   Future predictImage(File image) async {
-    if (image == null) return;
-    await recognizeImage(image);
+    if (image == null) {
+      print('no image');
+    } else {
+      await recognizeImage(image);
+    }
   }
 
   Future recognizeImage(File image) async {
@@ -48,9 +50,7 @@ class _MyCameraState extends State<MyCamera> {
       imageMean: 127.5,
       imageStd: 127.5,
     );
-    setState(() {
-      _recognitions = recognitions;
-    });
+    print(recognitions);
   }
 
   ///Create variables for storing the position and the address, in the state class.
@@ -205,15 +205,22 @@ class _MyCameraState extends State<MyCamera> {
                     onPressed: () {
                       this._getImage();
                       this._getCurrentLocation();
-                      this._amountPest = 1;
-                      this._typePest = 'snail';
-
-                      this.predictImage(this._image);
-                      print(this._recognitions);
                     },
                     child: Text('Camera'),
                     color: Colors.blueAccent,
                   ),
+                ),
+              ),
+              Container(
+                child: FlatButton(
+                  onPressed: () {
+                    this._amountPest = 0;
+                    this._typePest = 'Snail';
+
+                    this.predictImage(this._image);
+                  },
+                  child: Text('Analyze'),
+                  color: Colors.blueAccent,
                 ),
               ),
               Container(
